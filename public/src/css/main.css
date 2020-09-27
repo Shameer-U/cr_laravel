@@ -1,0 +1,80 @@
+body{
+  background-color:#f5f8fa;  
+}
+
+.nav-link{
+  color:white !important;
+}
+.nav-link:hover{
+  font-weight:700;
+  color:white !important;
+}
+.signup-container{
+  width:300px;
+  margin-top:2rem;
+}
+.login-container{
+  margin-top:2rem;
+  width:300px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.increase-width{
+  width:700px;
+}
+
+.search-field{
+  display:block;
+  width:400px;
+  margin-left:auto;
+}
+
+.search-field input{
+width:180px;
+}
+
+/*
+//to adjust modal width customly
+.modal-dialog{
+  max-width:700px !important;
+}*/
+
+/*Status section*/
+.status-adjust{
+  width:400px;
+  margin-left:auto;
+  
+}
+.status-change-button-container{
+  display:inline-block;
+  width:150px;
+}
+.status-section{
+display:inline-block;
+
+}
+.to-delete-button{
+  display:inline-block;
+  margin-right:2rem;
+}
+.status-label{
+  display:inline-block;
+  font-size: 1.1rem;
+  font-weight:500;
+  height:52px;
+  line-height:52px;
+}
+/*end status section*/
+
+.adjust-table-width{
+  max-width:150px; 
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+}
+
+.status-filter-button-container{
+  display:inline-block;
+  width:150px;
+}
