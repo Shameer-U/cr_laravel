@@ -16,3 +16,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'LoginController@loginPage');
 Route::post('/login', 'LoginController@adminLogin');
+
+Route::get('/complaints', 'ComplaintController@index');

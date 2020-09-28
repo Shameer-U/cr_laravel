@@ -2,6 +2,12 @@
 
 @section('content')
 
+<?php
+ // echo '<pre>'; 
+ // print_r($complaints);
+ // echo '<pre>';
+?>
+
 <table id="dataTable" class="display mt-2" style="width:100%">
         <thead>
             <tr>
@@ -17,22 +23,20 @@
         </thead>
         <tbody>
 
-        <?php if(!empty($complaints)):
-                 foreach( $complaints as $complaint): ?>
+        
+        @foreach( $complaints as $complaint)
           <tr>
-             <td><?php echo $complaint['complaint_no']; ?></td>
-             <td><?php echo $complaint['customer_name']; ?></td>
-             <td><img style="width:50px; height:50px;" src="<?php echo base_url() ?>assets/upload_images/<?php echo $complaint['img_name']; ?>" alt=""></td>
-             <td><?php echo $complaint['mobile_no']; ?></td>
-             <td><?php echo $complaint['date']; ?></td>
-             <td><?php echo $complaint['address']; ?></td>
-             <td><?php echo $complaint['status']; ?></td>
-			  <td><a class="btn btn-info btn-sm" href="<?php echo base_url();?>complaint_controller/load_complaint_details/<?php echo $complaint['complaint_no']; ?>">view</a></td>
+             <td> {{ $complaint->complaint_no  }}</td>
+             <td>{{$complaint->customer_name }}</td>
+             <td><img style="width:50px; height:50px;" src="{{-- URL::to('storage/cover_images/'.$post->cover_image)--}}" alt=""></td>
+             <td>{{ $complaint->mobile_number  }}</td>
+             <td>{{ $complaint->date  }}</td>
+             <td>{{ $complaint->address  }}</td>
+             <td>{{$complaint->status  }}</td>
+			  <td><a class="btn btn-info btn-sm" href="/complaints/{{$complaint->id}}/edit">view</a></td>
              
           </tr>
-       <?php endforeach;
-            endif;
-         ?>
+          @endforeach
         </tbody>
         <tfoot>
             <tr>

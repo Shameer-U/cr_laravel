@@ -37,7 +37,7 @@ class LoginController extends Controller
 
             $request->session()->put('admin', $admin);
 
-            return redirect('/')->with('success', 'Login successfull');
+            return redirect('/complaints')->with('success', 'Login successfull');
         } 
         else 
         {

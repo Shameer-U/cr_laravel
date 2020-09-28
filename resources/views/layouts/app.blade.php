@@ -11,6 +11,11 @@
         <!--my custom files -->
          <!--one way of loading files from public folder -->
         <link rel="stylesheet" href="{{asset('src/css/bootstrap.min.css')}}">
+
+        <!-- daterange CSS -->
+        <link rel="stylesheet" href="{{ URL::to('src/daterangepicker-master/daterangepicker.css') }}">
+        <!-- -->
+        <link rel="stylesheet" href="{{ URL::to('src/DataTables-1.10.18/css/jquery.dataTables.min.css') }}">
         <!--another way of loading files from public folder -->
         <link rel="stylesheet" href="{{ URL::to('src/css/main.css')}}">
 
