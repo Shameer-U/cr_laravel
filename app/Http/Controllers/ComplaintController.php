@@ -13,4 +13,11 @@ class ComplaintController extends Controller
         //$complaints = Complaint::orderBy('created_at','desc');
         return view('pages.complaints')->with('complaints', $complaints);
     }
+
+    public function createComplaint(Request $request){
+        $name = $request->input('name');
+        $mobile_no = $request->input('mobile_no');
+
+        return response()->json(['name'=> $name]);
+    }
 }

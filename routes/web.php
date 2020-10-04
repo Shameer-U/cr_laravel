@@ -18,3 +18,4 @@ Route::get('/', 'LoginController@loginPage');
 Route::post('/login', 'LoginController@adminLogin');
 
 Route::get('/complaints', 'ComplaintController@index');
+Route::post('/createcomplaint', 'ComplaintController@createComplaint');
