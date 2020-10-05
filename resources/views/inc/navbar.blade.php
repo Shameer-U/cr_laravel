@@ -8,15 +8,6 @@
         <li class="nav-item">
           <a class="nav-link" href="/">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/about">About</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ url('/services') }}">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/posts">Blog</a>
-          </li>
        
       </ul>
       <ul class="navbar-nav">
@@ -26,12 +17,6 @@
             <a class="nav-link" href="{{ url('/users') }}">Login</a>
           </li>
         @else
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url('/dashboard') }}">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url('/posts/create') }}">Create Post</a>
-          </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url('/users/logout') }}">Logout</a>
           </li>

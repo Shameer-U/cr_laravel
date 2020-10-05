@@ -18,4 +18,5 @@ Route::get('/', 'LoginController@loginPage');
 Route::post('/login', 'LoginController@adminLogin');
 
 Route::get('/complaints', 'ComplaintController@index');
-Route::post('/createcomplaint', 'ComplaintController@createComplaint');
+Route::post('/complaint/create', 'ComplaintController@createComplaint');
+Route::get('/complaint/{id}/edit', 'ComplaintController@editComplaint');

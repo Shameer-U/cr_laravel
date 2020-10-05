@@ -53,17 +53,18 @@
         </thead>
         <tbody>
 
-        
+        <?php $i = 0; ?>
         @foreach( $complaints as $complaint)
+          <?php $i++; ?>
           <tr>
-             <td> {{ $complaint->complaint_no  }}</td>
+             <td>{{$i}}</td>
              <td>{{$complaint->customer_name }}</td>
-             <td><img style="width:50px; height:50px;" src="{{-- URL::to('storage/cover_images/'.$post->cover_image)--}}" alt=""></td>
-             <td>{{ $complaint->mobile_number  }}</td>
+             <td><img style="width:50px; height:50px;" src="{{ URL::to('storage/complaint_images/'.$complaint->img) }}" alt=""></td>
+             <td>{{ $complaint->mobile_no }}</td>
              <td>{{ $complaint->date  }}</td>
              <td>{{ $complaint->address  }}</td>
              <td>{{$complaint->status  }}</td>
-			  <td><a class="btn btn-info btn-sm" href="/complaints/{{$complaint->id}}/edit">view</a></td>
+			  <td><a class="btn btn-info btn-sm" href="/complaint/{{$complaint->id}}/edit">view</a></td>
              
           </tr>
           @endforeach
@@ -112,7 +113,7 @@
                        </div>
                        <div class="offset-md-2 col-md-4 form-group">
                           <label>Date</label>
-                           <input type="text" name="date" id="date" class="form-control" autocomplete="off" disabled>
+                           <input type="text" name="date" id="date" value={{date('d/m/Y')}} class="form-control" autocomplete="off" disabled>
                            <span class="error_form" id="date_errmsg"></span>
                        </div>
                     </div> 
@@ -177,7 +178,7 @@ $(document).ready(function() { // to load after everything else has loaded
 
 <script>
    
-/* date range picker */
+/*
 $(function () {
     $('input[name="date"]').daterangepicker({
         singleDatePicker: true,
@@ -195,6 +196,7 @@ $('#date').keydown(function(){
 $('#date').bind('contextmenu',function(e){
      e.preventDefault();
 });
+*/
 
 
 var error_msg;
@@ -443,7 +445,7 @@ $('#create_complaint_modal_btn').click(function(e){
         
         var fd = new FormData();
         var img  = $('#img')[0].files[0];
-        fd.append('userfile', img);
+        fd.append('complaint_img', img);
         fd.append('name', cust_name);
         fd.append('mobile_no', mobile_no);
         fd.append('date', date);
@@ -454,7 +456,7 @@ $('#create_complaint_modal_btn').click(function(e){
 
         
         $.ajax({
-            url:'/createcomplaint',
+            url:'/complaint/create',
             method:'POST',
             data: fd,
             contentType: false,
@@ -468,7 +470,7 @@ $('#create_complaint_modal_btn').click(function(e){
                 $('#create_complaint_modal_btn').html('save');
                 console.log(result);
 
-                if(result == 'success'){
+                if(result.status == 'success'){
                     //to redirect to complaint section
                     window.location = '/complaints';
                 }
@@ -495,6 +497,7 @@ $('#create_complaint_modal').on('hidden.bs.modal', function(){
     hide_error('#address_errmsg', '#address');
     hide_error('#item_name_errmsg', '#item_name');
     hide_error('#complaint_errmsg', '#complaint');
+    hide_error('#img_errmsg', '#img');
 });
 
 
