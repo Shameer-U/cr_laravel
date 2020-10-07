@@ -20,3 +20,5 @@ Route::post('/login', 'LoginController@adminLogin');
 Route::get('/complaints', 'ComplaintController@index');
 Route::post('/complaint/create', 'ComplaintController@createComplaint');
 Route::get('/complaint/{id}/edit', 'ComplaintController@editComplaint');
+Route::post('/complaint/change_status', 'ComplaintController@changeStatus');
+Route::post('/complaints/show_time_line', 'ComplaintController@showTimeLine');

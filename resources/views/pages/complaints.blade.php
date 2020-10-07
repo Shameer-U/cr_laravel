@@ -464,22 +464,21 @@ $('#create_complaint_modal_btn').click(function(e){
             processData:false,
             dataType:'JSON',
             beforeSend: function() {
-                $('#create_complaint_modal_btn').html('loading.....');
+                $('#create_complaint_modal_btn').prop('disabled', true);
             },
             success: function(result){
-                $('#create_complaint_modal_btn').html('save');
                 console.log(result);
 
                 if(result.status == 'success'){
                     //to redirect to complaint section
                     window.location = '/complaints';
                 }
-                
+                $('#create_complaint_modal_btn').prop('disabled', false);
             },
             error:function(result){
                 console.log(result);
                 console.log(result.responseText);
-                $('#create_complaint_modal_btn').html('save');
+                $('#create_complaint_modal_btn').prop('disabled', false);
                 alert('could not get data from database');
             }
 

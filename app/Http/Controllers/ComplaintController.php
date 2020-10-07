@@ -52,9 +52,42 @@ class ComplaintController extends Controller
 
     public function editComplaint($id){
         $complaint = Complaint::find($id);
+
+        //one method of returning data
         //return view('pages.editcomplaint', ['complaint' => $complaint]);
-        $data['complaint'] = $complaint;
-        return view('pages.editcomplaint', $data);
+
+        //same method with a little change
+         $data['complaint'] = $complaint;
+         return view('pages.editcomplaint', $data);
+    }
+
+    public function changeStatus(Request $request){
+        $status = $request->input('status');
+        $id = $request->input('complaint_no');
+
+        $complaint = Complaint::find($id);
+        $complaint->status = $status;
+        $complaint->save();
+
+        if($status == 'waiting for approval'){
+            $status = 'waiting_for_approval';
+        }
+
+
+        $result = DB::table('status_track')
+        ->updateOrInsert(
+            ['complaint_no' => $id],
+            [$status => date('d-m-Y')]
+        );
+
+        return response()->json($result);
+    }
+
+    public function showTimeLine(Request $request){
+        $complaint_no = $request->input('complaint_no');
+
+        $result = DB::table('status_track')->where('complaint_no', $complaint_no)->first();
+        return response()->json($result); 
     }
 
     public function updateComplaint(Request $request, $id)
