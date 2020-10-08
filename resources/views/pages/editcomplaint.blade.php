@@ -2,7 +2,7 @@
 
 @section('content')
 
-<?php $statuses =['pending','waiting for approval','approved','rejected','completed']; ?>
+<?php $statuses = ['pending','waiting for approval','approved','rejected','completed']; ?>
 <div class="container">
     <div class="status-adjust">
         <button type="button" class="btn btn-danger to-delete-button" id="delete_button" data-toggle="modal" data-target="#deleteModal">Delete Permanently</button>
@@ -37,7 +37,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <a class="btn btn-danger" href="{{ url('complaint/delete') }}">Delete</a>
+            <a class="btn btn-danger" href="{{ url('complaint/'.$complaint->id.'/delete') }}">Delete</a>
         </div>
         </div>
     </div>
@@ -67,7 +67,7 @@
 
             <div><h2 class="py-3 text-center">Complaint Details</h2></div>
 
-                <form class="py-3 px-3" method="POST" action=""  enctype="multipart/form-data" >
+            <form class="py-3 px-3" method="POST" action="/complaint/{{$complaint->id}}/update_complaint"  enctype="multipart/form-data" >
                 {{ csrf_field() }}
 
                 <div class="form-group row">
@@ -106,11 +106,17 @@
                     <input type="text" name="item_name" id="item_name" value="{{ $complaint->address }}" class="form-control" autocomplete="off">
                     <span class="error_form" id="item_name_errmsg"></span>
                 </div> 
-                <div class="form-group">
-                    <label>Choose Image</label>
-                    <input type="file" class="form-control" name="myfile" id="img" size="20" >
-                    <span class="error_form" id="img_errmsg"></span>
-                </div> 
+                <div class="row">
+                    <div class="col-md-6 form-group"> 
+                        <label>Choose Image</label>
+                        <input type="file" class="form-control" name="complaint_img" id="img" size="20">
+                        <span class="error_form" id="img_errmsg"></span>
+                    </div> 
+                    <div class="offset-md-2 col-md-4 form-group">
+                        <label> </label>
+                        <img src="{{ URL::to('storage/complaint_images/'.$complaint->img) }}" alt="" id="img_tag" width="100px; height:100px;">
+                    </div>
+               </div>
                 <div class="form-group">
                     <label>Complaint</label>
                     <textarea type="textarea"  name="complaint" id="complaint" class="form-control" placeholder="Enter Complaint" autocomplete="off">{{ $complaint->complaint }}</textarea>
@@ -182,7 +188,7 @@
         var complaint_no = $('#complaint_no').val();
         $.ajax({
             method:'POST',
-            url:'/complaints/show_time_line',
+            url:'/complaint/show_time_line',
             data:{complaint_no:complaint_no},
             dataType:'JSON',
             success: function(result){ 
@@ -218,6 +224,7 @@
 
 </script>
 
+<!--Validation section-->
 <script>
    
     
@@ -277,8 +284,31 @@
     $('#complaint').on('input',function(){
         check_complaint(); 
     });
-    $('#img').on('input',function(){
+
+  /*  $('#img').on('input',function(){
         check_img();
+    });*/
+
+    $('#img').on('input',function(){
+      //checking if there is any error on selected img
+      var img_result = check_img_not_mandotory();
+      var img_tag = '#img_tag';
+      if(img_result == false){//means no error, set img
+            //set image
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function imageIsLoaded(e) {
+                                  $(img_tag).attr('src', e.target.result);
+                                };
+                reader.readAsDataURL(this.files[0]);
+            }
+      }
+      else{
+        $(img_tag).attr('src', '');
+      }
+
+      //hide_error('#img_errmsg', '#img');
+        
     });
     
     function check_name(){
@@ -366,16 +396,15 @@
         }
     
     
-        function check_img(){
+        function check_img_not_mandotory(){
             /* var img_name = $('#img').val();
                 var extension = $('#img').val().split('.').pop().toLowerCase();  */
     
             var img_value  = $('#img').val();
-            if(img_value != ''){
-    
+
+            if(img_value != ''){//if file selected then it should of proper format
                 // var img  = $('#img')[0].files[0];
                 // console.log(img);
-    
                     var img_name  = $('#img')[0].files[0].name;
                     var extension = img_name.substr((img_name.lastIndexOf('.') + 1)).toLowerCase();
     
@@ -401,20 +430,18 @@
                             }  
     
                     }
-                    else if(img_name != '' &&  extension == ''){
-                        display_error_msg('please provide extension', '#img_errmsg' , '#img' );
-                        error_img = true;
-                    }
-                    else if(img_name == ''){
+                    else{
                         display_error_msg('please select an image', '#img_errmsg' , '#img' );
                         error_img = true;
                     }  
                     
             }
-            else{
-                display_error_msg('please select an image', '#img_errmsg' , '#img' );
-                error_img = true;
+            else{//if no fie selected then there should be no error.
+                hide_error('#img_errmsg', '#img');
+                error_img = false; 
             }
+
+            return error_img;
         }
     
     
@@ -433,10 +460,10 @@
             check_address(); 
             check_item_name(); 
             check_complaint();
-            check_img();
+            error_img  = check_img_not_mandotory();
     
             if(error_name == true || error_mobile_no == true || error_address == true || 
-                error_item_name == true || error_complaint == true || error_img == true ){
+                error_item_name == true || error_complaint == true ){
                     e.preventDefault();
                     e.stopPropagation();
                 }

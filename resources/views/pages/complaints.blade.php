@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h1 class="my-3 text-center">Welcome to complaint section</h1>
+<h1 class="my-3 text-center">Complaints</h1>
 
 <div class="row">
     <div class="col-md-10">
@@ -127,12 +127,18 @@
                           <label>Item Name</label>
                           <input type="text" name="item_name" id="item_name" class="form-control" placeholder="Enter Item Name" autocomplete="off">
                           <span class="error_form" id="item_name_errmsg"></span>
-                      </div> 
-                      <div class="form-group">
-                          <label>Choose Image</label>
-                          <input type="file" class="form-control" name="userfile" id="img" size="20">
-                          <span class="error_form" id="img_errmsg"></span>
-                      </div> 
+                      </div>
+                      <div class="row">
+                            <div class="col-md-6 form-group"> 
+                                <label>Choose Image</label>
+                                <input type="file" class="form-control" name="userfile" id="img" size="20">
+                                <span class="error_form" id="img_errmsg"></span>
+                            </div> 
+                            <div class="offset-md-2 col-md-4 form-group">
+                                <label> </label>
+                                <img src="" alt="" id="img_tag" width="100px; height:100px;">
+                            </div>
+                       </div> 
                       <div class="form-group">
                           <label>Complaint</label>
                           <textarea type="textarea" name="complaint" id="complaint" class="form-control" placeholder="Enter Complaint" autocomplete="off"></textarea>
@@ -172,7 +178,7 @@ $(document).ready(function() { // to load after everything else has loaded
 
     $('#status_change_button').on('change', function() {
        var status_value = $(this).val();
-       window.location = '<?php //echo base_url();?>complaint_controller/load_complaint_section/'+status_value;
+       window.location = '/complaint_controller/load_complaint_section/'+status_value;
    });
 </script>
 
@@ -234,9 +240,31 @@ $('#item_name').on('input',function(){
 $('#complaint').on('input',function(){
     check_complaint(); 
 });
-$('#img').on('input',function(){
+/*$('#img').on('input',function(){
     check_img();
-});
+});*/
+
+$('#img').on('input',function(){
+      //checking if there is any error on selected img
+      var img_result = check_img();
+      var img_tag = '#img_tag';
+      if(img_result == false){//means no error, set img
+            //set image
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function imageIsLoaded(e) {
+                                  $(img_tag).attr('src', e.target.result);
+                                };
+                reader.readAsDataURL(this.files[0]);
+            }
+      }
+      else{
+        $(img_tag).attr('src', '');
+      }
+
+      //hide_error('#img_errmsg', '#img');
+        
+    });
 
 function check_name(){
     var name = $('#name').val();
@@ -328,11 +356,10 @@ function check_name(){
             var extension = $('#img').val().split('.').pop().toLowerCase();  */
 
         var img_value  = $('#img').val();
-        if(img_value != ''){
 
+        if(img_value != ''){
             // var img  = $('#img')[0].files[0];
             // console.log(img);
-
                 var img_name  = $('#img')[0].files[0].name;
                 var extension = img_name.substr((img_name.lastIndexOf('.') + 1)).toLowerCase();
 
@@ -372,33 +399,10 @@ function check_name(){
             display_error_msg('please select an image', '#img_errmsg' , '#img' );
             error_img = true;
         }
+
+        return error_img;
     }
 
-
-    //FOR UPDATING COMPLAINT
-
-    $('#update_complaint_modal_btn1').click(function(e){
-         error_name         = true;
-         error_mobile_no    = true;
-         error_address      = true;
-         error_item_name    = true;
-         error_complaint    = true;
-         error_img          = true;
-
-        check_name();
-        check_mobile_no();
-        check_address(); 
-        check_item_name(); 
-        check_complaint();
-        check_img();
-
-        if(error_name == true || error_mobile_no == true || error_address == true || 
-            error_item_name == true || error_complaint == true || error_img == true ){
-                e.preventDefault();
-                e.stopPropagation();
-            }
-    });
-    
 
 
 //FOR CREATING COMPLAINT
@@ -427,7 +431,7 @@ $('#create_complaint_modal_btn').click(function(e){
     check_address(); 
     check_item_name(); 
     check_complaint();
-    check_img();
+    error_img  = check_img();
 
     if(error_name == false && error_mobile_no == false && error_address == false && 
         error_item_name == false && error_complaint == false && error_img == false){  
@@ -469,7 +473,7 @@ $('#create_complaint_modal_btn').click(function(e){
             success: function(result){
                 console.log(result);
 
-                if(result.status == 'success'){
+                if(result.status == true){
                     //to redirect to complaint section
                     window.location = '/complaints';
                 }
@@ -497,6 +501,7 @@ $('#create_complaint_modal').on('hidden.bs.modal', function(){
     hide_error('#item_name_errmsg', '#item_name');
     hide_error('#complaint_errmsg', '#complaint');
     hide_error('#img_errmsg', '#img');
+    $('#img_tag').attr('src', '');
 });
 
 
