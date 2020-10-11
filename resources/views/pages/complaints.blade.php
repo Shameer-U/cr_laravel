@@ -5,29 +5,27 @@
 <h1 class="my-3 text-center">Complaints</h1>
 
 <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-9">
         <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#create_complaint_modal">
             Create New Complaint
         </button>
     </div>
-    <div class="col-md-2">
-       <!-- <div class="form-group">
-            <select class="form-control" id="status_change_button">
-                <?php// $status_value = str_replace('', '_',$current_status); ?>
-                <option value="<?php //echo $status_value; ?>"><?php //echo $current_status; ?></option>
-                <?php 
-                 /* $all_status =['all','pending','waiting for approval', 'approved','rejected', 'completed']; 
-                  foreach($all_status as $status):
-                     if($status != $current_status ):
-                     $status_value = str_replace(' ', '_',$status);*/
-                ?>
-                  <option value="<?php// echo $status_value; ?>"><?php// echo $status; ?></option>
-                <?php 
-                  /* endif;
-                   endforeach; */
-                ?>
+    <div class="col-md-3">
+        <div class="form-group">
+            <select class="form-control" id="status_change_btn">
+                  <?php 
+                    $all_status =['all','pending','waiting for approval', 'approved','rejected', 'completed']; 
+                    $status_value = str_replace(' ', '_', $current_status); //adding underscore
+                  ?>
+                   <option value="{{ $status_value }}">{{ $current_status }}</option>
+                   @foreach($all_status as $status)
+                     @if($status != $current_status)
+                       <?php $status_value = str_replace(' ', '_',$status);  ?>
+                      <option value="{{ $status_value }}">{{ $status }}</option>
+                   @endif
+                   @endforeach
             </select>
-        </div>-->
+        </div>
     </div>
 </div>
 
@@ -176,9 +174,9 @@ $(document).ready(function() { // to load after everything else has loaded
 
 <script>
 
-    $('#status_change_button').on('change', function() {
+    $('#status_change_btn').on('change', function() {
        var status_value = $(this).val();
-       window.location = '/complaint_controller/load_complaint_section/'+status_value;
+       window.location = '/complaints/'+status_value;
    });
 </script>
 

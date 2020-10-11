@@ -6,13 +6,39 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Complaint;
 use DB;
+use Session;
 
 class ComplaintController extends Controller
 {
-    public function index(){
-        $complaints = DB::table('complaints')->get();
+    function __construct()
+    {
+       //session is not working inside construct
+       $this->check_login();
+    }
+
+    public function check_login(){
+        $qwe = Session::get('admin');
+        if( empty($qwe) ){
+            return redirect('/')->send();
+        }
+    }
+
+
+    public function complaints($status = 'all'){  
+        $status = str_replace('_', ' ', $status);//removing underscore
+        if($status != 'all'){
+            $complaints = DB::table('complaints')
+            ->where('status', $status)
+            ->get();
+        }
+        else{
+            $complaints = DB::table('complaints')
+            ->get();
+        }
+                       
         //$complaints = Complaint::orderBy('created_at','desc');
-        return view('pages.complaints')->with('complaints', $complaints);
+       // return view('pages.complaints')->with('complaints', $complaints);
+       return view('pages.complaints', ['complaints'=>$complaints, 'current_status' =>$status]);
     }
 
     public function createComplaint(Request $request){

@@ -6,15 +6,6 @@
     <div class="text-center">
      <h2>Login</h2>
    </div>
-    <div style="background-color:red; color:#fff;">
-    <?php// echo validation_errors(); ?>
-    </div>
-    <div class="text-center" style="background-color:red; color:#fff;">
-        <?php //if(!empty($error)){
-           // echo $error;
-       // }
-        ?>
-    </div>
 
 
    <form method="POST" action="{{ url('/login') }}">
@@ -31,14 +22,18 @@
    </form>
 
 <div>
-   <a href="forgotpswd_controller/show_forgot_pswd_page">Forgot Password?</a> 
+   {{-- <a href="forgotpswd_controller/show_forgot_pswd_page">Forgot Password?</a>  --}}
 </div>
 </div>
 
 <div>
     <pre>
-        {{ print_r(session('admin')) }}
+        <?php
+           //print_r(session('admin'));
+        ?>
     </pre>
+    <!-- accessing single value from session-->
+    {{-- {{ session('admin')['name'] }} --}}
 </div>
 
 @include('inc.footer')        

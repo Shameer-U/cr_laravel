@@ -36,6 +36,7 @@ class LoginController extends Controller
                       );
 
             $request->session()->put('admin', $admin);
+            //or simply session($admin); , which will save all values into session
 
             return redirect('/complaints')->with('success', 'Login successfull');
         } 
@@ -44,5 +45,10 @@ class LoginController extends Controller
             return redirect('/')->with('error', 'User does not exist');
         }
         
+    }
+
+    public function logout(){ 
+        session()->flush(); //using session global helper, not using $request->session()->flush();
+        return redirect('/');
     }
 }

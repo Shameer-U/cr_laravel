@@ -13,11 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+//Route::get('/',['as' => 'exit', 'uses' => 'LoginController@loginPage']);
 Route::get('/', 'LoginController@loginPage');
 Route::post('/login', 'LoginController@adminLogin');
+Route::get('/logout', 'LoginController@logout');
 
-Route::get('/complaints', 'ComplaintController@index');
+//Route::get('/complaints', 'ComplaintController@complaints');
+/*
+//passing optional parameter
+Route::get('/complaints/{status?}', function ($status = 'all') {
+    $controller = new \App\Http\Controllers\ComplaintController();
+    return $controller->complaints($status);
+});
+*/
+Route::get('/complaints/{status?}', 'ComplaintController@complaints'); //passing optional parameter
 Route::post('/complaint/create', 'ComplaintController@createComplaint');
 
 Route::get('/complaint/{id}/edit', 'ComplaintController@editComplaint');
