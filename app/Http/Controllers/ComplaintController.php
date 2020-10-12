@@ -12,19 +12,19 @@ class ComplaintController extends Controller
 {
     function __construct()
     {
-       //session is not working inside construct
-       $this->check_login();
+       //session wont work inside constructer
     }
 
-    public function check_login(){
-        $qwe = Session::get('admin');
-        if( empty($qwe) ){
-            return redirect('/')->send();
+    public function islogin(){
+        if( empty(session('admin')) ){
+            //return redirect('/')->with('error', 'Not logged in');
+            return redirect('/')->send();//send function forces to exist from script
         }
     }
 
 
     public function complaints($status = 'all'){  
+        $this->islogin();
         $status = str_replace('_', ' ', $status);//removing underscore
         if($status != 'all'){
             $complaints = DB::table('complaints')
@@ -42,7 +42,6 @@ class ComplaintController extends Controller
     }
 
     public function createComplaint(Request $request){
-
         //Handle File Upload
         if($request->hasFile('complaint_img')){
             //Get filename with the extension
@@ -85,8 +84,9 @@ class ComplaintController extends Controller
         return response()->json(['status'=> $result]);
     }
 
-
+ 
     public function editComplaint($id){
+        $this->islogin();
         $complaint = Complaint::find($id);
 
         //one method of returning data
@@ -128,6 +128,7 @@ class ComplaintController extends Controller
 
     public function updateComplaint(Request $request, $id)
     {
+        $this->islogin();
          //Handle File Upload
          if($request->hasFile('complaint_img')){
             //Get filename with the extension
@@ -167,6 +168,7 @@ class ComplaintController extends Controller
     }
 
     public function deleteComplaint($id){
+        $this->islogin();
         $complaint = DB::table('complaints')->where('id', $id)->first();
         $result = DB::table('complaints')->where('id', $id)->delete();
 
