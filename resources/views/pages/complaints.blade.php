@@ -129,7 +129,7 @@
                       <div class="row">
                             <div class="col-md-6 form-group"> 
                                 <label>Choose Image</label>
-                                <input type="file" class="form-control" name="userfile" id="img" size="20">
+                                <input type="file" class="form-control" name="userfile" id="img" >
                                 <span class="error_form" id="img_errmsg"></span>
                             </div> 
                             <div class="offset-md-2 col-md-4 form-group">
