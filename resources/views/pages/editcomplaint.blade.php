@@ -103,7 +103,7 @@
                 </div> 
                 <div class="form-group">
                     <label>Item Name</label>
-                    <input type="text" name="item_name" id="item_name" value="{{ $complaint->address }}" class="form-control" autocomplete="off">
+                    <input type="text" name="item_name" id="item_name" value="{{ $complaint->item_name }}" class="form-control" autocomplete="off">
                     <span class="error_form" id="item_name_errmsg"></span>
                 </div> 
                 <div class="row">

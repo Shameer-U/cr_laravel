@@ -57,7 +57,7 @@
           <tr>
              <td>{{$i}}</td>
              <td>{{$complaint->customer_name }}</td>
-             <td><img style="width:50px; height:50px;" src="{{ URL::to('storage/complaint_images/'.$complaint->img) }}" alt=""></td>
+             <td><img style="width:50px; height:50px;" src="{{ asset('storage/complaint_images/'.$complaint->img) }}" alt=""></td>
              <td>{{ $complaint->mobile_no }}</td>
              <td>{{ $complaint->date  }}</td>
              <td>{{ $complaint->address  }}</td>
@@ -411,7 +411,8 @@ $('#create_complaint_modal_btn').click(function(e){
 
     $.ajaxSetup({
         headers: {
-            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+            //'X-CSRF-TOKEN': $('input[name="_token"]').val() /*this works*/
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
 
